@@ -11,8 +11,10 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
-  const [language, setLanguage] = useState('bn'); // Default Bangla
+  const [language, setLanguage] = useState('bn');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
+  // Cart Handlers
   const addToCart = (product) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
@@ -48,10 +50,15 @@ export default function App() {
     setCurrentPage('productDetail');
   };
 
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setCurrentPage('home');
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-100 font-sans text-slate-800">
       
-      {/* Top Mini Header */}
+      {/* Top Bar */}
       <div className="bg-[#0b1329] text-slate-400 text-xs py-1.5 px-4 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -63,11 +70,21 @@ export default function App() {
             </span>
           </div>
           <div className="flex items-center gap-4 text-xs">
-            <button className="hover:text-white">{language === 'bn' ? 'সাহায্য' : 'Help'}</button>
-            <button className="hover:text-white">{language === 'bn' ? 'অর্ডার ট্র্যাকিং' : 'Track Order'}</button>
+            <button 
+              onClick={() => setCurrentPage('about')} 
+              className="hover:text-white transition-colors"
+            >
+              {language === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
+            </button>
+            <button 
+              onClick={() => setCurrentPage('contact')} 
+              className="hover:text-white transition-colors"
+            >
+              {language === 'bn' ? 'যোগাযোগ' : 'Contact Us'}
+            </button>
             <button 
               onClick={() => setLanguage(language === 'en' ? 'bn' : 'en')}
-              className="flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-2 py-0.5 rounded text-[11px] transition-colors"
+              className="flex items-center gap-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-2 py-0.5 rounded text-[11px] transition-colors ml-2"
             >
               <Globe className="w-3 h-3" />
               <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
@@ -76,13 +93,13 @@ export default function App() {
         </div>
       </div>
 
-      {/* Main Middle Header */}
+      {/* Main Header */}
       <header className="bg-[#0b132b] text-white py-3 px-4 border-b border-slate-800 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           
-          {/* Logo */}
+          {/* Logo - Clicks back to Home */}
           <div 
-            onClick={() => setCurrentPage('home')}
+            onClick={() => { setCurrentPage('home'); setSelectedCategory('all'); }}
             className="flex items-center gap-1 cursor-pointer select-none"
           >
             <div className="bg-amber-500 text-slate-950 font-black rounded-full w-7 h-7 flex items-center justify-center text-sm shadow">
@@ -111,6 +128,8 @@ export default function App() {
               <Heart className="w-5 h-5" />
               <span className="absolute -top-2 -right-2 bg-amber-500 text-slate-950 text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
             </button>
+
+            {/* Cart Icon */}
             <button 
               onClick={() => setCurrentPage('cart')}
               className="relative hover:text-amber-500 transition-colors"
@@ -126,36 +145,58 @@ export default function App() {
 
         {/* Categories Bar */}
         <div className="max-w-7xl mx-auto flex items-center gap-6 mt-3 text-xs font-semibold text-slate-300 pt-2 border-t border-slate-800/60 overflow-x-auto">
-          <button onClick={() => setCurrentPage('home')} className="text-amber-500 hover:text-amber-400 border-b-2 border-amber-500 pb-1 whitespace-nowrap">
+          <button 
+            onClick={() => handleCategoryChange('all')} 
+            className={`pb-1 whitespace-nowrap transition-colors ${currentPage === 'home' && selectedCategory === 'all' ? 'text-amber-500 border-b-2 border-amber-500' : 'hover:text-amber-500'}`}
+          >
             {language === 'bn' ? 'সব ক্যাটালগ' : 'All Catalog'}
           </button>
-          <button className="hover:text-amber-500 transition-colors whitespace-nowrap">
+          <button 
+            onClick={() => handleCategoryChange('Electronics')} 
+            className={`pb-1 whitespace-nowrap transition-colors ${currentPage === 'home' && selectedCategory === 'Electronics' ? 'text-amber-500 border-b-2 border-amber-500' : 'hover:text-amber-500'}`}
+          >
             {language === 'bn' ? 'ইলেকট্রনিক্স' : 'Electronics'}
           </button>
-          <button className="hover:text-amber-500 transition-colors whitespace-nowrap">
+          <button 
+            onClick={() => handleCategoryChange('Fashion & Clothing')} 
+            className={`pb-1 whitespace-nowrap transition-colors ${currentPage === 'home' && selectedCategory === 'Fashion & Clothing' ? 'text-amber-500 border-b-2 border-amber-500' : 'hover:text-amber-500'}`}
+          >
             {language === 'bn' ? 'ফ্যাশন ও পোশাক' : 'Fashion & Clothing'}
           </button>
-          <button className="hover:text-amber-500 transition-colors whitespace-nowrap">
+          <button 
+            onClick={() => handleCategoryChange('Smart Gadgets')} 
+            className={`pb-1 whitespace-nowrap transition-colors ${currentPage === 'home' && selectedCategory === 'Smart Gadgets' ? 'text-amber-500 border-b-2 border-amber-500' : 'hover:text-amber-500'}`}
+          >
             {language === 'bn' ? 'স্মার্ট গ্যাজেট' : 'Smart Gadgets'}
           </button>
-          <button className="hover:text-amber-500 transition-colors whitespace-nowrap">
+          <button 
+            onClick={() => handleCategoryChange('Home Appliances')} 
+            className={`pb-1 whitespace-nowrap transition-colors ${currentPage === 'home' && selectedCategory === 'Home Appliances' ? 'text-amber-500 border-b-2 border-amber-500' : 'hover:text-amber-500'}`}
+          >
             {language === 'bn' ? 'হোম অ্যাপ্লায়েন্স' : 'Home Appliances'}
           </button>
-          <button className="hover:text-amber-500 transition-colors whitespace-nowrap">
+          <button 
+            onClick={() => handleCategoryChange('Beauty & Care')} 
+            className={`pb-1 whitespace-nowrap transition-colors ${currentPage === 'home' && selectedCategory === 'Beauty & Care' ? 'text-amber-500 border-b-2 border-amber-500' : 'hover:text-amber-500'}`}
+          >
             {language === 'bn' ? 'বিউটি ও কেয়ার' : 'Beauty & Care'}
           </button>
         </div>
       </header>
 
-      {/* Main Content Area */}
+      {/* Dynamic Main Content Rendering */}
       <main className="flex-grow">
         {currentPage === 'home' && (
           <HomePage 
             onProductClick={handleProductClick} 
             onAddToCart={addToCart} 
             language={language}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            setCurrentPage={setCurrentPage}
           />
         )}
+
         {currentPage === 'productDetail' && selectedProduct && (
           <ProductDetail 
             product={selectedProduct} 
@@ -163,6 +204,7 @@ export default function App() {
             onBack={() => setCurrentPage('home')}
           />
         )}
+
         {currentPage === 'cart' && (
           <CartPage 
             cart={cart} 
@@ -172,6 +214,7 @@ export default function App() {
             onContinueShopping={() => setCurrentPage('home')}
           />
         )}
+
         {currentPage === 'checkout' && (
           <CheckoutPage 
             cart={cart}
@@ -181,14 +224,18 @@ export default function App() {
             }}
           />
         )}
-        {currentPage === 'about' && <AboutPage />}
-        {currentPage === 'contact' && <ContactPage />}
+
+        {/* About Us Page */}
+        {currentPage === 'about' && (
+          <AboutPage language={language} onGoHome={() => setCurrentPage('home')} />
+        )}
+
+        {/* Contact Us Page */}
+        {currentPage === 'contact' && (
+          <ContactPage language={language} onGoHome={() => setCurrentPage('home')} />
+        )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-[#0b1329] text-slate-400 py-8 px-4 mt-12 border-t border-slate-800 text-center text-sm">
-        <p>© 2026 OnBazar. {language === 'bn' ? 'সর্বস্বত্ব সংরক্ষিত।' : 'All rights reserved.'}</p>
-      </footer>
     </div>
   );
 }
