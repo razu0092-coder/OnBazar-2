@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Truck, ShieldCheck, Headphones, RefreshCw, ArrowRight, Star, Plus, Facebook, Instagram, Youtube } from 'lucide-react';
 
-const products = [
+const initialProducts = [
   { id: 1, name_bn: "ওয়ারলেস প্রিমিয়াম ব্লুটুথ হেডফোন", name_en: "Wireless Premium Bluetooth Headphones", cat_bn: "ইলেকট্রনিক্স", cat_en: "Electronics", price: 2450, oldPrice: 3200, image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80", badge_bn: "২০% ছাড়", badge_en: "20% OFF" },
-  { id: 2, name_bn: "স্মার্ট ফিটনেস ওয়াচ উইথ হার্ট রেট সেন্সর", name_en: "Smart Fitness Watch with Heart Rate Sensor", cat_bn: "গ্যাজেট", cat_en: "Gadget", price: 1850, oldPrice: 2500, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80", badge_bn: "হট", badge_en: "HOT" },
-  { id: 3, name_bn: "ক্লাসিক রানিং স্পোর্টস শু", name_en: "Classic Running Sports Shoes", cat_bn: "ফ্যাশন", cat_en: "Fashion", price: 3100, oldPrice: 4200, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", badge_bn: "বেস্ট সেলার", badge_en: "BESTSELLER" },
-  { id: 4, name_bn: "মিনিমালিস্ট ডেস্কে সাজানোর ডিজিটাল ঘড়ি", name_en: "Minimalist Desktop Digital Clock", cat_bn: "হোম অ্যাপ্লায়েন্স", cat_en: "Home Appliance", price: 1200, oldPrice: 1500, image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=500&q=80", badge_bn: null, badge_en: null },
-  { id: 5, name_bn: "অর্গানিক স্কিন কেয়ার ময়েশ্চারাইজার", name_en: "Organic Skincare Moisturizer", cat_bn: "বিউটি", cat_en: "Beauty", price: 950, oldPrice: 1300, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=500&q=80", badge_bn: "নতুন", badge_en: "NEW" },
+  { id: 2, name_bn: "স্মার্ট ফিটনেস ওয়াচ উইথ হার্ট রেট সেন্সর", name_en: "Smart Fitness Watch with Heart Rate Sensor", cat_bn: "স্মার্ট গ্যাজেট", cat_en: "Smart Gadgets", price: 1850, oldPrice: 2500, image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80", badge_bn: "হট", badge_en: "HOT" },
+  { id: 3, name_bn: "ক্লাসিক রানিং স্পোর্টস শু", name_en: "Classic Running Sports Shoes", cat_bn: "ফ্যাশন ও পোশাক", cat_en: "Fashion & Clothing", price: 3100, oldPrice: 4200, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", badge_bn: "বেস্ট সেলার", badge_en: "BESTSELLER" },
+  { id: 4, name_bn: "মিনিমালিস্ট ডেস্কে সাজানোর ডিজিটাল ঘড়ি", name_en: "Minimalist Desktop Digital Clock", cat_bn: "হোম অ্যাপ্লায়েন্স", cat_en: "Home Appliances", price: 1200, oldPrice: 1500, image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=500&q=80", badge_bn: null, badge_en: null },
+  { id: 5, name_bn: "অর্গানিক স্কিন কেয়ার ময়েশ্চারাইজার", name_en: "Organic Skincare Moisturizer", cat_bn: "বিউটি ও কেয়ার", cat_en: "Beauty & Care", price: 950, oldPrice: 1300, image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=500&q=80", badge_bn: "নতুন", badge_en: "NEW" },
   { id: 6, name_bn: "পোর্টেবল ওয়াটারপ্রুফ ব্লুটুথ স্পিকার", name_en: "Portable Waterproof Bluetooth Speaker", cat_bn: "ইলেকট্রনিক্স", cat_en: "Electronics", price: 2800, oldPrice: 3500, image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=500&q=80", badge_bn: "১৫% ছাড়", badge_en: "15% OFF" },
-  { id: 7, name_bn: "লেদার প্রিমিয়াম ট্রাভেল ব্যাকপ্যাক", name_en: "Leather Premium Travel Backpack", cat_bn: "ফ্যাশন", cat_en: "Fashion", price: 2200, oldPrice: 2900, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80", badge_bn: null, badge_en: null },
-  { id: 8, name_bn: "প্রফেশনাল স্টুডিও মাইক্রোফোন", name_en: "Professional Studio Recording Microphone", cat_bn: "গ্যাজেট", cat_en: "Gadget", price: 3500, oldPrice: 4500, image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=500&q=80", badge_bn: "হট", badge_en: "HOT" }
+  { id: 7, name_bn: "লেদার প্রিমিয়াম ট্রাভেল ব্যাকপ্যাক", name_en: "Leather Premium Travel Backpack", cat_bn: "ফ্যাশন ও পোশাক", cat_en: "Fashion & Clothing", price: 2200, oldPrice: 2900, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80", badge_bn: null, badge_en: null },
+  { id: 8, name_bn: "প্রফেশনাল স্টুডিও মাইক্রোফোন", name_en: "Professional Studio Recording Microphone", cat_bn: "স্মার্ট গ্যাজেট", cat_en: "Smart Gadgets", price: 3500, oldPrice: 4500, image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=500&q=80", badge_bn: "হট", badge_en: "HOT" }
 ];
 
-const HomePage = ({ onProductClick, onAddToCart, language }) => {
+const HomePage = ({ onProductClick, onAddToCart, language, selectedCategory, setSelectedCategory, setCurrentPage }) => {
   const isBn = language === 'bn';
+
+  // Category Filtering Logic
+  const filteredProducts = selectedCategory === 'all' 
+    ? initialProducts 
+    : initialProducts.filter(p => p.cat_en === selectedCategory || p.cat_bn === selectedCategory);
 
   return (
     <div className="space-y-12 pb-12">
@@ -75,92 +80,127 @@ const HomePage = ({ onProductClick, onAddToCart, language }) => {
         </div>
       </section>
 
-      {/* POPULAR CATEGORIES */}
+      {/* POPULAR CATEGORIES (CLICKABLE) */}
       <section className="max-w-7xl mx-auto px-4">
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
           <h2 className="text-xl font-bold text-slate-800 border-b-2 border-amber-500 inline-block pb-1">
             {isBn ? 'জনপ্রিয় ক্যাটাগরি' : 'Popular Categories'}
           </h2>
+          {selectedCategory !== 'all' && (
+            <button 
+              onClick={() => setSelectedCategory('all')} 
+              className="text-xs font-semibold text-amber-600 hover:underline"
+            >
+              {isBn ? 'সব ক্যাটাগরি দেখুন' : 'Show All Categories'}
+            </button>
+          )}
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3">
+          <div 
+            onClick={() => setSelectedCategory('Electronics')} 
+            className={`bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3 ${selectedCategory === 'Electronics' ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-200'}`}
+          >
             <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80" alt="Electronics" className="w-full h-28 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300" />
             <h3 className="font-semibold text-sm text-slate-800 mt-3">{isBn ? 'ইলেকট্রনিক্স' : 'Electronics'}</h3>
           </div>
-          <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3">
+
+          <div 
+            onClick={() => setSelectedCategory('Smart Gadgets')} 
+            className={`bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3 ${selectedCategory === 'Smart Gadgets' ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-200'}`}
+          >
             <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=400&q=80" alt="Smart Watch" className="w-full h-28 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300" />
             <h3 className="font-semibold text-sm text-slate-800 mt-3">{isBn ? 'স্মার্ট ওয়াচ' : 'Smart Watch'}</h3>
           </div>
-          <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3">
+
+          <div 
+            onClick={() => setSelectedCategory('Fashion & Clothing')} 
+            className={`bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3 ${selectedCategory === 'Fashion & Clothing' ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-200'}`}
+          >
             <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=400&q=80" alt="Fashion" className="w-full h-28 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300" />
             <h3 className="font-semibold text-sm text-slate-800 mt-3">{isBn ? 'জুতো ও ফ্যাশন' : 'Shoes & Fashion'}</h3>
           </div>
-          <div className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3">
+
+          <div 
+            onClick={() => setSelectedCategory('Beauty & Care')} 
+            className={`bg-white rounded-xl overflow-hidden border shadow-sm hover:shadow-md transition-all cursor-pointer group text-center p-3 ${selectedCategory === 'Beauty & Care' ? 'border-amber-500 ring-2 ring-amber-500/20' : 'border-slate-200'}`}
+          >
             <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80" alt="Beauty" className="w-full h-28 object-cover rounded-lg group-hover:scale-105 transition-transform duration-300" />
             <h3 className="font-semibold text-sm text-slate-800 mt-3">{isBn ? 'বিউটি কেয়ার' : 'Beauty Care'}</h3>
           </div>
         </div>
       </section>
 
-      {/* TRENDING PRODUCTS */}
+      {/* PRODUCTS GRID */}
       <section id="products" className="max-w-7xl mx-auto px-4">
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
           <h2 className="text-xl font-bold text-slate-800 border-b-2 border-amber-500 inline-block pb-1">
             {isBn ? 'ট্রেন্ডিং প্রোডাক্টস' : 'Trending Products'}
           </h2>
+          <span className="text-xs text-slate-500">
+            {isBn ? `মোট ${filteredProducts.length}টি পণ্য` : `Total ${filteredProducts.length} items`}
+          </span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((prod) => {
-            const name = isBn ? prod.name_bn : prod.name_en;
-            const cat = isBn ? prod.cat_bn : prod.cat_en;
-            const badge = isBn ? prod.badge_bn : prod.badge_en;
 
-            return (
-              <div key={prod.id} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col overflow-hidden group">
-                <div className="relative h-48 bg-slate-100 overflow-hidden cursor-pointer" onClick={() => onProductClick && onProductClick(prod)}>
-                  {badge && (
-                    <span className="absolute top-2 left-2 bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded shadow z-10">
-                      {badge}
-                    </span>
-                  )}
-                  <img src={prod.image} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                </div>
-                <div className="p-4 flex flex-col flex-grow">
-                  <span className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider mb-1">{cat}</span>
-                  <h3 className="font-bold text-slate-800 text-sm line-clamp-2 cursor-pointer hover:text-amber-600 transition-colors" onClick={() => onProductClick && onProductClick(prod)}>
-                    {name}
-                  </h3>
-                  <div className="flex items-center gap-1 text-amber-400 my-2 text-xs">
-                    <Star className="w-3.5 h-3.5 fill-amber-400" />
-                    <Star className="w-3.5 h-3.5 fill-amber-400" />
-                    <Star className="w-3.5 h-3.5 fill-amber-400" />
-                    <Star className="w-3.5 h-3.5 fill-amber-400" />
-                    <Star className="w-3.5 h-3.5 fill-amber-400" />
-                    <span className="text-slate-400 ml-1 text-[11px]">(4.8)</span>
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
+            <p className="text-slate-500 text-sm">
+              {isBn ? 'এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।' : 'No products found in this category.'}
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filteredProducts.map((prod) => {
+              const name = isBn ? prod.name_bn : prod.name_en;
+              const cat = isBn ? prod.cat_bn : prod.cat_en;
+              const badge = isBn ? prod.badge_bn : prod.badge_en;
+
+              return (
+                <div key={prod.id} className="bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-lg transition-all flex flex-col overflow-hidden group">
+                  <div className="relative h-48 bg-slate-100 overflow-hidden cursor-pointer" onClick={() => onProductClick && onProductClick(prod)}>
+                    {badge && (
+                      <span className="absolute top-2 left-2 bg-amber-500 text-slate-950 font-bold text-[10px] px-2 py-0.5 rounded shadow z-10">
+                        {badge}
+                      </span>
+                    )}
+                    <img src={prod.image} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </div>
-                  <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                      <span className="font-bold text-slate-900 text-base">৳ {prod.price}</span>
-                      {prod.oldPrice && (
-                        <span className="text-xs text-slate-400 line-through ml-2">৳ {prod.oldPrice}</span>
-                      )}
+                  <div className="p-4 flex flex-col flex-grow">
+                    <span className="text-[10px] uppercase font-semibold text-slate-400 tracking-wider mb-1">{cat}</span>
+                    <h3 className="font-bold text-slate-800 text-sm line-clamp-2 cursor-pointer hover:text-amber-600 transition-colors" onClick={() => onProductClick && onProductClick(prod)}>
+                      {name}
+                    </h3>
+                    <div className="flex items-center gap-1 text-amber-400 my-2 text-xs">
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <Star className="w-3.5 h-3.5 fill-amber-400" />
+                      <span className="text-slate-400 ml-1 text-[11px]">(4.8)</span>
                     </div>
-                    <button 
-                      onClick={() => onAddToCart && onAddToCart(prod)}
-                      className="bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 p-2 rounded-full transition-colors"
-                      title="Add to Cart"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
+                    <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between">
+                      <div>
+                        <span className="font-bold text-slate-900 text-base">৳ {prod.price}</span>
+                        {prod.oldPrice && (
+                          <span className="text-xs text-slate-400 line-through ml-2">৳ {prod.oldPrice}</span>
+                        )}
+                      </div>
+                      <button 
+                        onClick={() => onAddToCart && onAddToCart(prod)}
+                        className="bg-slate-100 hover:bg-amber-500 hover:text-slate-950 text-slate-700 p-2 rounded-full transition-colors"
+                        title="Add to Cart"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
-      {/* DEAL OF THE DAY BANNER */}
+      {/* DEAL BANNER */}
       <section className="max-w-7xl mx-auto px-4">
         <div className="bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-950 text-white rounded-2xl p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
           <div className="space-y-2 text-center md:text-left">
@@ -197,7 +237,7 @@ const HomePage = ({ onProductClick, onAddToCart, language }) => {
       <footer className="bg-[#0b1329] text-slate-400 pt-12 pb-6 px-4 border-t border-slate-800 text-sm">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-3">
-            <div className="flex items-center gap-1 select-none">
+            <div className="flex items-center gap-1 select-none cursor-pointer" onClick={() => setCurrentPage && setCurrentPage('home')}>
               <div className="bg-amber-500 text-slate-950 font-black rounded-full w-6 h-6 flex items-center justify-center text-xs">On</div>
               <span className="text-xl font-black text-white">Bazar</span>
             </div>
@@ -209,10 +249,10 @@ const HomePage = ({ onProductClick, onAddToCart, language }) => {
           <div>
             <h4 className="text-white font-bold mb-3">{isBn ? 'দ্রুত লিঙ্ক' : 'Quick Links'}</h4>
             <ul className="space-y-2 text-xs">
-              <li><a href="#" className="hover:text-amber-500">{isBn ? 'হোম' : 'Home'}</a></li>
+              <li><button onClick={() => setCurrentPage && setCurrentPage('home')} className="hover:text-amber-500">{isBn ? 'হোম' : 'Home'}</button></li>
               <li><a href="#products" className="hover:text-amber-500">{isBn ? 'শপ' : 'Shop'}</a></li>
-              <li><a href="#" className="hover:text-amber-500">{isBn ? 'আমাদের সম্পর্কে' : 'About Us'}</a></li>
-              <li><a href="#" className="hover:text-amber-500">{isBn ? 'যোগাযোগ' : 'Contact Us'}</a></li>
+              <li><button onClick={() => setCurrentPage && setCurrentPage('about')} className="hover:text-amber-500">{isBn ? 'আমাদের সম্পর্কে' : 'About Us'}</button></li>
+              <li><button onClick={() => setCurrentPage && setCurrentPage('contact')} className="hover:text-amber-500">{isBn ? 'যোগাযোগ' : 'Contact Us'}</button></li>
             </ul>
           </div>
 
