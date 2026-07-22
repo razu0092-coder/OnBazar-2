@@ -5,13 +5,14 @@ import CartPage from './CartPage';
 import CheckoutPage from './CheckoutPage';
 import ContactPage from './ContactPage';
 import AboutPage from './AboutPage';
-import { ShoppingBag, Menu, X, Phone } from 'lucide-react';
+import { ShoppingBag, Menu, X, Phone, Globe } from 'lucide-react';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [cart, setCart] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [language, setLanguage] = useState('bn'); // 'bn' for Bangla, 'en' for English
 
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -50,21 +51,30 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 font-sans text-slate-800">
-      {/* Top Banner Bar */}
-      <div className="bg-slate-900 text-slate-200 text-xs py-2 px-4 border-b border-slate-800">
+      
+      {/* 1. Top Banner Bar (Dark Background) */}
+      <div className="bg-slate-950 text-slate-300 text-xs py-2 px-4 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-2">
             <Phone className="w-3.5 h-3.5 text-emerald-400" />
-            <span>হেল্পলাইন: +880 1700-000000 (২৪/৭ সাপোর্ট)</span>
+            <span>
+              {language === 'bn' 
+                ? 'হেল্পলাইন: +880 1700-000000 (২৪/৭ সাপোর্ট)' 
+                : 'Helpline: +880 1700-000000 (24/7 Support)'}
+            </span>
           </div>
           <div>
-            <span>সারাদেশে হোম ডেলিভারি সুবিধা</span>
+            <span>
+              {language === 'bn' 
+                ? 'সারাদেশে হোম ডেলিভারি সুবিধা' 
+                : 'Nationwide Home Delivery Available'}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Main Navbar */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      {/* 2. Main Navbar (Dark Color Theme) */}
+      <header className="bg-slate-900 text-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           
           {/* Logo */}
@@ -72,46 +82,57 @@ export default function App() {
             onClick={() => setCurrentPage('home')}
             className="flex items-center gap-2 cursor-pointer select-none"
           >
-            <div className="bg-emerald-600 text-white font-bold text-xl px-3 py-1 rounded-lg">
+            <div className="bg-emerald-500 text-slate-950 font-bold text-xl px-3 py-1 rounded-lg">
               অন
             </div>
-            <span className="text-xl font-extrabold text-slate-800 tracking-tight">
-              অনলাইন<span className="text-emerald-600">বাজার</span>
+            <span className="text-xl font-extrabold text-white tracking-tight">
+              অনলাইন<span className="text-emerald-400">বাজার</span>
             </span>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8 font-medium">
+          <nav className="hidden md:flex items-center gap-8 font-medium text-slate-200">
             <button 
               onClick={() => setCurrentPage('home')}
-              className={`hover:text-emerald-600 transition-colors ${currentPage === 'home' ? 'text-emerald-600 font-semibold' : 'text-slate-600'}`}
+              className={`hover:text-emerald-400 transition-colors ${currentPage === 'home' ? 'text-emerald-400 font-semibold' : ''}`}
             >
-              হোম (Home)
+              {language === 'bn' ? 'হোম' : 'Home'}
             </button>
             <button 
               onClick={() => setCurrentPage('about')}
-              className={`hover:text-emerald-600 transition-colors ${currentPage === 'about' ? 'text-emerald-600 font-semibold' : 'text-slate-600'}`}
+              className={`hover:text-emerald-400 transition-colors ${currentPage === 'about' ? 'text-emerald-400 font-semibold' : ''}`}
             >
-              আমাদের সম্পর্কে
+              {language === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
             </button>
             <button 
               onClick={() => setCurrentPage('contact')}
-              className={`hover:text-emerald-600 transition-colors ${currentPage === 'contact' ? 'text-emerald-600 font-semibold' : 'text-slate-600'}`}
+              className={`hover:text-emerald-400 transition-colors ${currentPage === 'contact' ? 'text-emerald-400 font-semibold' : ''}`}
             >
-              যোগাযোগ
+              {language === 'bn' ? 'যোগাযোগ' : 'Contact'}
             </button>
           </nav>
 
-          {/* Actions */}
+          {/* Actions: Language Switcher & Cart */}
           <div className="flex items-center gap-4">
+            
+            {/* Language Switcher Button */}
+            <button 
+              onClick={() => setLanguage(language === 'bn' ? 'en' : 'bn')}
+              className="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-slate-700 transition-colors"
+              title="Change Language"
+            >
+              <Globe className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{language === 'bn' ? 'English' : 'বাংলা'}</span>
+            </button>
+
             {/* Cart Icon */}
             <button 
               onClick={() => setCurrentPage('cart')}
-              className="relative p-2 text-slate-700 hover:text-emerald-600 transition-colors"
+              className="relative p-2 text-slate-200 hover:text-emerald-400 transition-colors"
             >
               <ShoppingBag className="w-6 h-6" />
               {totalCartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-emerald-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-emerald-500 text-slate-950 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {totalCartCount}
                 </span>
               )}
@@ -120,7 +141,7 @@ export default function App() {
             {/* Mobile Menu Button */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-slate-700"
+              className="md:hidden p-2 text-slate-200"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -129,24 +150,24 @@ export default function App() {
 
         {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2">
+          <div className="md:hidden bg-slate-800 border-b border-slate-700 px-4 pt-2 pb-4 space-y-2">
             <button 
               onClick={() => { setCurrentPage('home'); setIsMobileMenuOpen(false); }}
-              className="block w-full text-left py-2 text-slate-700 font-medium"
+              className="block w-full text-left py-2 text-slate-200 font-medium hover:text-emerald-400"
             >
-              হোম (Home)
+              {language === 'bn' ? 'হোম' : 'Home'}
             </button>
             <button 
               onClick={() => { setCurrentPage('about'); setIsMobileMenuOpen(false); }}
-              className="block w-full text-left py-2 text-slate-700 font-medium"
+              className="block w-full text-left py-2 text-slate-200 font-medium hover:text-emerald-400"
             >
-              আমাদের সম্পর্কে
+              {language === 'bn' ? 'আমাদের সম্পর্কে' : 'About Us'}
             </button>
             <button 
               onClick={() => { setCurrentPage('contact'); setIsMobileMenuOpen(false); }}
-              className="block w-full text-left py-2 text-slate-700 font-medium"
+              className="block w-full text-left py-2 text-slate-200 font-medium hover:text-emerald-400"
             >
-              যোগাযোগ
+              {language === 'bn' ? 'যোগাযোগ' : 'Contact'}
             </button>
           </div>
         )}
@@ -190,7 +211,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-8 px-4 mt-12 border-t border-slate-800">
+      <footer className="bg-slate-950 text-slate-400 py-8 px-4 mt-12 border-t border-slate-800">
         <div className="max-w-7xl mx-auto text-center text-sm">
           <p>© 2026 অনলাইন বাজার (OnBazar)। সর্বস্বত্ব সংরক্ষিত।</p>
         </div>
