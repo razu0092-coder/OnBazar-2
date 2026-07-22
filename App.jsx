@@ -77,17 +77,22 @@ export default function App() {
       <header className="bg-slate-900 text-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           
-          {/* Logo */}
+          {/* Logo (Updated & Fixed Design) */}
           <div 
             onClick={() => setCurrentPage('home')}
-            className="flex items-center gap-2 cursor-pointer select-none"
+            className="flex items-center gap-2 cursor-pointer select-none group"
           >
-            <div className="bg-emerald-500 text-slate-950 font-bold text-xl px-3 py-1 rounded-lg">
-              অন
+            <div className="bg-emerald-500 text-slate-950 font-black text-xl px-2.5 py-1 rounded-lg shadow-sm group-hover:bg-emerald-400 transition-colors">
+              ON
             </div>
-            <span className="text-xl font-extrabold text-white tracking-tight">
-              অনলাইন<span className="text-emerald-400">বাজার</span>
-            </span>
+            <div className="flex flex-col">
+              <span className="text-lg font-extrabold text-white tracking-tight leading-none">
+                অনলাইন<span className="text-emerald-400">বাজার</span>
+              </span>
+              <span className="text-[10px] text-slate-400 font-medium tracking-wider uppercase mt-0.5">
+                OnBazar.com
+              </span>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
